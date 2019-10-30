@@ -23,7 +23,7 @@ public class RoshamboApp {
 				player2 = new Randy();
 				player2.setName("TheLions");
 			} else {
-				System.out.println("Please enter t or l: ");
+				player2 = Player.chooseOponent(scnr);
 			}
 			Player.fight(player1, player2);
 			

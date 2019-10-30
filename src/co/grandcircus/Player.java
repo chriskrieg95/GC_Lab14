@@ -1,5 +1,7 @@
 package co.grandcircus;
 
+import java.util.Scanner;
+
 public abstract class Player {
 	private String name;
 	
@@ -12,24 +14,50 @@ public abstract class Player {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
 	public static void fight(Player player1, Player player2) {
-		String player1Result = player1.generateRoshambo().toString();
-		String player2Result = player2.generateRoshambo().toString();
-		if (player1Result == player2Result) {
-			System.out.printf("\n%s: %s \n%s: %s \n%s\n", player1.getName(), player1Result, player2.getName(), player2Result, "Draw!");
-		} else if (player1Result.equalsIgnoreCase("rock") && player2Result.equalsIgnoreCase("scissors")) {
-			System.out.printf("\n%s: %s \n%s: %s \n%s\n", player1.getName(), player1Result, player2.getName(), player2Result, player1.getName() + " wins!");
-		} else if (player1Result.equalsIgnoreCase("paper") && player2Result.equalsIgnoreCase("rock")) {
-			System.out.printf("\n%s: %s \n%s: %s \n%s\n", player1.getName(), player1Result, player2.getName(), player2Result, player1.getName() + " wins!");
-		} else if (player1Result.equalsIgnoreCase("scissors") && player2Result.equalsIgnoreCase("paper")) {
-			System.out.printf("\n%s: %s \n%s: %s \n%s\n", player1.getName(), player1Result, player2.getName(), player2Result, player1.getName() + " wins!");
-		} else if (player1Result.equalsIgnoreCase("rock") && player2Result.equalsIgnoreCase("paper")) {
-			System.out.printf("\n%s: %s \n%s: %s \n%s\n", player1.getName(), player1Result, player2.getName(), player2Result, player2.getName() + " wins!");
-		} else if (player1Result.equalsIgnoreCase("paper") && player2Result.equalsIgnoreCase("scissors")) {
-			System.out.printf("\n%s: %s \n%s: %s \n%s\n", player1.getName(), player1Result, player2.getName(), player2Result, player2.getName() + " wins!");
-		} else if (player1Result.equalsIgnoreCase("scissors") && player2Result.equalsIgnoreCase("rock")) {
-			System.out.printf("\n%s: %s \n%s: %s \n%s\n", player1.getName(), player1Result, player2.getName(), player2Result, player2.getName() + " wins!");
+		Roshambo p1rs = player1.generateRoshambo();
+		Roshambo p2rs = player2.generateRoshambo();
+		if (p1rs == p2rs) {
+			System.out.printf("\n%s: %s \n%s: %s \n%s\n", player1.getName(), p1rs.toString(), player2.getName(), p2rs.toString(), "Draw!");
+		} else if (p1rs == Roshambo.ROCK) {
+			if(p2rs == Roshambo.PAPER) {
+				System.out.printf("\n%s: %s \n%s: %s \n%s\n", player1.getName(), p1rs.toString(), player2.getName(), p2rs.toString(), player2.getName() + " wins!");
+			}  else {
+				System.out.printf("\n%s: %s \n%s: %s \n%s\n", player1.getName(), p1rs.toString(), player2.getName(), p2rs.toString(), player1.getName() + " wins!");
+			} 
+		} else if (p1rs == Roshambo.PAPER) {
+			if (p2rs == Roshambo.ROCK) {
+				System.out.printf("\n%s: %s \n%s: %s \n%s\n", player1.getName(), p1rs.toString(), player2.getName(), p2rs.toString(), player1.getName() + " wins!");
+			} else {
+				System.out.printf("\n%s: %s \n%s: %s \n%s\n", player1.getName(), p1rs.toString(), player2.getName(), p2rs.toString(), player2.getName() + " wins!");
+			} 
+		} else if (p1rs == Roshambo.SCISSORS) {
+			if (p2rs == Roshambo.ROCK) {
+				System.out.printf("\n%s: %s \n%s: %s \n%s\n", player1.getName(), p1rs.toString(), player2.getName(), p2rs.toString(), player2.getName() + " wins!");
+			} else {
+				System.out.printf("\n%s: %s \n%s: %s \n%s\n", player1.getName(), p1rs.toString(), player2.getName(), p2rs.toString(), player1.getName() + " wins!");
+			}
 		}
+	}
+	
+	public static Player chooseOponent(Scanner scnr) {
+		Player player2 = null;
+		String response = "";
+		boolean isValid = false;
+		do {
+			response = Validator.getString(scnr, "Would you like to play against TheTigers or TheLions (t/l): ");
+			if (response.equalsIgnoreCase("t")) {
+				isValid = true;
+				player2 = new Rocky();
+				player2.setName("TheTigers");
+			} else if (response.equalsIgnoreCase("l")) {
+				isValid = true;
+				player2 = new Randy();
+				player2.setName("TheLions");
+			} 
+		} while(!isValid);
+		return player2;
 	}
 
 }
